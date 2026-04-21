@@ -1,0 +1,75 @@
+export const TRANSLATIONS = {
+  en: {
+    title: "PokeType Master",
+    score: "Score",
+    wrong: "Mistakes",
+    loading: "Loading...",
+    next: "Next",
+    recent: "Recent Answers",
+    best: "Best",
+    effect_4x: "Super Effective (4x) !!",
+    effect_2x: "It's Effective (2x)",
+    effect_1x: "Normal (1x)",
+    effect_0x: "No Effect (0x)",
+    effect_low: "Not Effective (<1x)",
+    hint_4x: "⚠️ Warning: This Pokemon has a 4x weakness!",
+    settings: "Settings",
+    language: "Language",
+    regions: "Regions",
+    all: "All",
+    none: "None",
+    hp: "HP",
+    atk: "Atk",
+    def: "Def",
+    spa: "SpA",
+    spd: "SpD",
+    spe: "Spe",
+    typeNames: {
+      normal: "Normal", fire: "Fire", water: "Water", electric: "Electric", grass: "Grass", ice: "Ice",
+      fighting: "Fighting", poison: "Poison", ground: "Ground", flying: "Flying", psychic: "Psychic", bug: "Bug",
+      rock: "Rock", ghost: "Ghost", dragon: "Dragon", dark: "Dark", steel: "Steel", fairy: "Fairy"
+    }
+    },
+    ja: {
+    title: "ポケタイプ・マスター",
+    score: "スコア",
+    wrong: "間違い",
+    loading: "読み込み中...",
+    next: "次へ",
+    recent: "最近の回答",
+    best: "最適",
+    effect_4x: "効果はバツグンだ！ (4x) !!",
+    effect_2x: "効果はバツグンだ (2x)",
+    effect_1x: "効果は普通 (1x)",
+    effect_0x: "効果がない (0x)",
+    effect_low: "効果はいまひとつ (<1x)",
+    hint_4x: "⚠️ 注意：このポケモンには4倍の弱点があります！",
+    settings: "設定",
+    language: "言語",
+    regions: "地方",
+    all: "すべて",
+    none: "なし",
+    hp: "HP",
+    atk: "こうげき",
+    def: "ぼうぎょ",
+    spa: "とくこう",
+    spd: "とくぼう",
+    spe: "すばやさ",
+    typeNames: {
+      normal: "ノーマル", fire: "ほのお", water: "みず", electric: "でんき", grass: "くさ", ice: "こおり",
+      fighting: "かくとう", poison: "どく", ground: "じめん", flying: "ひこう", psychic: "エスパー", bug: "むし",
+      rock: "いわ", ghost: "ゴースト", dragon: "ドラゴン", dark: "あく", steel: "はがね", fairy: "フェアリー"
+    }
+    }
+    };
+export const REGIONS = [
+  { id: 'kanto', name: { en: 'Kanto', ja: 'カントー' }, range: [1, 151] },
+  { id: 'johto', name: { en: 'Johto', ja: 'ジョウト' }, range: [152, 251] },
+  { id: 'hoenn', name: { en: 'Hoenn', ja: 'ホウエン' }, range: [252, 386] },
+  { id: 'sinnoh', name: { en: 'Sinnoh', ja: 'シンオウ' }, range: [387, 493] },
+  { id: 'unova', name: { en: 'Unova', ja: 'イッシュ' }, range: [494, 649] },
+  { id: 'kalos', name: { en: 'Kalos', ja: 'カロス' }, range: [650, 721] },
+  { id: 'alola', name: { en: 'Alola', ja: 'アローラ' }, range: [722, 809] },
+  { id: 'galar', name: { en: 'Galar', ja: 'ガラル' }, range: [810, 905] },
+  { id: 'paldea', name: { en: 'Paldea', ja: 'パルデア' }, range: [906, 1025] }
+];

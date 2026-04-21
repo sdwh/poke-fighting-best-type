@@ -30,7 +30,7 @@ interface GameState {
   layoutMode: 'compact' | 'relaxed';
 }
 
-const typeIcons = import.meta.glob('./assets/icons/*.svg', { eager: true, as: 'url' }) as Record<string, string>;
+const typeIcons = import.meta.glob('./assets/icons/*.svg', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
 
 const getTypeIcon = (type: PokemonType) => {
   return typeIcons[`./assets/icons/${type}.svg`];

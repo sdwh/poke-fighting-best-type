@@ -1,6 +1,6 @@
 # PokeType Master
 
-> 寶可夢屬性剋制練習遊戲 — 隨機出題，選出最有效的攻擊屬性來累積分數！
+> 寶可夢屬性剋制練習遊戲 — 隨機出題，選出最有效的攻擊屬性來累積分數
 
 <p align="center">
   <img src="docs/screenshot-main.png" width="270" alt="主畫面" />

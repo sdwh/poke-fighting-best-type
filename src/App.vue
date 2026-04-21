@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
 import { TYPE_CHART, TYPE_COLORS, ALL_TYPES, type PokemonType } from './data/typeChart';
 import { TRANSLATIONS, REGIONS } from './data/translations';
 
@@ -88,12 +88,26 @@ const bestTypesForCurrent = computed(() => {
   return { types, multiplier: maxM };
 });
 
+let lastTouchEnd = 0;
+const handleTouchEnd = (event: TouchEvent) => {
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) {
+    event.preventDefault();
+  }
+  lastTouchEnd = now;
+};
+
 onMounted(() => {
   const saved = localStorage.getItem('poke_type_master_v3');
   if (saved) {
     gameState.value = { ...gameState.value, ...JSON.parse(saved) };
   }
   fetchNewPokemon();
+  document.addEventListener('touchend', handleTouchEnd, false);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('touchend', handleTouchEnd, false);
 });
 
 const saveGame = () => {

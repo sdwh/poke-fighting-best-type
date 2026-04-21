@@ -26,7 +26,15 @@ interface GameState {
   wrongIds: number[];
   language: 'en' | 'ja';
   selectedRegions: string[];
+  useIcons: boolean;
+  layoutMode: 'compact' | 'relaxed';
 }
+
+const typeIcons = import.meta.glob('./assets/icons/*.svg', { eager: true, as: 'url' }) as Record<string, string>;
+
+const getTypeIcon = (type: PokemonType) => {
+  return typeIcons[`./assets/icons/${type}.svg`];
+};
 
 const currentPokemon = ref<Pokemon | null>(null);
 const loading = ref(false);
@@ -41,7 +49,9 @@ const gameState = ref<GameState>({
   history: [],
   wrongIds: [],
   language: 'en',
-  selectedRegions: REGIONS.map(r => r.id)
+  selectedRegions: REGIONS.map(r => r.id),
+  useIcons: true,
+  layoutMode: 'compact'
 });
 
 const t = computed(() => TRANSLATIONS[gameState.value.language]);
@@ -269,6 +279,22 @@ const getStatColor = (key: string) => {
         </div>
       </div>
 
+      <div class="settings-group">
+        <label>{{ (t as any).useIcons }}</label>
+        <div class="lang-btns">
+          <button :class="{ active: gameState.useIcons }" @click="gameState.useIcons = true; saveGame()">{{ gameState.language === 'ja' ? 'はい' : 'Yes' }}</button>
+          <button :class="{ active: !gameState.useIcons }" @click="gameState.useIcons = false; saveGame()">{{ gameState.language === 'ja' ? 'いいえ' : 'No' }}</button>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <label>{{ (t as any).layoutMode }}</label>
+        <div class="lang-btns">
+          <button :class="{ active: gameState.layoutMode === 'compact' }" @click="gameState.layoutMode = 'compact'; saveGame()">{{ (t as any).compact }}</button>
+          <button :class="{ active: gameState.layoutMode === 'relaxed' }" @click="gameState.layoutMode = 'relaxed'; saveGame()">{{ (t as any).relaxed }}</button>
+        </div>
+      </div>
+
       <div class="settings-actions">
         <button class="reset-btn" @click="resetProgress">
           {{ gameState.language === 'ja' ? '進度リセット' : 'Reset Progress' }}
@@ -285,6 +311,7 @@ const getStatColor = (key: string) => {
           <h2 class="pokemon-name">#{{ currentPokemon.id }} {{ currentPokemon.names[gameState.language] }}</h2>
           <div class="reveal-types" v-if="showResult">
             <span v-for="type in currentPokemon.types" :key="type" class="type-badge" :style="{ backgroundColor: TYPE_COLORS[type] }">
+              <img v-if="gameState.useIcons" :src="getTypeIcon(type)" class="mini-icon" :alt="type" />
               {{ (t as any).typeNames[type] }}
             </span>
           </div>
@@ -311,6 +338,7 @@ const getStatColor = (key: string) => {
         <div class="best-hint" v-if="lastMultiplier < bestTypesForCurrent.multiplier">
           {{ t.best }}:
           <span v-for="type in bestTypesForCurrent.types" :key="type" class="mini-type" :style="{ backgroundColor: TYPE_COLORS[type] }">
+            <img v-if="gameState.useIcons" :src="getTypeIcon(type)" class="mini-icon" :alt="type" />
             {{ (t as any).typeNames[type] }}
           </span>
           ({{ bestTypesForCurrent.multiplier }}x)
@@ -320,7 +348,7 @@ const getStatColor = (key: string) => {
         <button @click="fetchNewPokemon" class="next-btn">{{ t.next }}</button>
       </div>
 
-      <div class="type-grid" :class="{ disabled: showResult }">
+      <div class="type-grid" :class="[gameState.layoutMode, { disabled: showResult }]">
         <button 
           v-for="type in ALL_TYPES" 
           :key="type"
@@ -332,7 +360,8 @@ const getStatColor = (key: string) => {
           }"
           @click="handleTypeSelect(type)"
         >
-          {{ (t as any).typeNames[type] }}
+          <img v-if="gameState.useIcons" :src="getTypeIcon(type)" class="type-icon" :alt="type" />
+          <span class="type-name">{{ (t as any).typeNames[type] }}</span>
         </button>
       </div>
     </main>
@@ -346,6 +375,7 @@ const getStatColor = (key: string) => {
             <div class="h-best">
               {{ t.best }}: 
               <span v-for="bt in h.bestTypes" :key="bt" class="mini-type" :style="{ backgroundColor: TYPE_COLORS[bt] }">
+                <img v-if="gameState.useIcons" :src="getTypeIcon(bt)" class="mini-icon" :alt="bt" />
                 {{ (t as any).typeNames[bt] }}
               </span>
               ({{ h.maxMultiplier }}x)
@@ -486,6 +516,9 @@ h1 { font-size: 1.1rem; margin: 0; color: #ffcb05; text-shadow: 2px 2px #3b4cca;
 .stat-val { width: 25px; text-align: left; font-weight: 800; }
 
 .type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 4px 14px;
   border-radius: 15px;
   font-size: 0.75rem;
@@ -493,6 +526,8 @@ h1 { font-size: 1.1rem; margin: 0; color: #ffcb05; text-shadow: 2px 2px #3b4cca;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
   box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
+
+.mini-icon { width: 14px; height: 14px; }
 
 .feedback {
   text-align: center;
@@ -512,7 +547,9 @@ h1 { font-size: 1.1rem; margin: 0; color: #ffcb05; text-shadow: 2px 2px #3b4cca;
 .best-hint { font-size: 0.8rem; color: #ddd; margin: 3px 0; }
 
 .mini-type {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 0.7rem;
@@ -536,8 +573,13 @@ h1 { font-size: 1.1rem; margin: 0; color: #ffcb05; text-shadow: 2px 2px #3b4cca;
 .type-grid.disabled { pointer-events: none; }
 
 .type-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   border: 1px solid rgba(255,255,255,0.2);
-  padding: 12px;
+  padding: 10px 4px;
   border-radius: 8px;
   color: white;
   font-weight: 800;
@@ -545,6 +587,12 @@ h1 { font-size: 1.1rem; margin: 0; color: #ffcb05; text-shadow: 2px 2px #3b4cca;
   font-size: 0.75rem;
   text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
   transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
+}
+.type-icon { 
+  width: 32px; 
+  height: 32px; 
+  margin-bottom: 4px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 .type-btn:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
 .type-btn:active { transform: scale(0.95); }
@@ -574,6 +622,7 @@ footer h3 { font-size: 0.85rem; color: #888; margin-bottom: 8px; }
 }
 
 @media (min-width: 400px) {
-  .type-grid { grid-template-columns: repeat(6, 1fr); }
+  .type-grid.compact { grid-template-columns: repeat(6, 1fr); }
+  .type-grid.relaxed { grid-template-columns: repeat(3, 1fr); }
 }
 </style>

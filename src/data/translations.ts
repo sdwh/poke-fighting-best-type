@@ -24,6 +24,10 @@ export const TRANSLATIONS = {
     spa: "SpA",
     spd: "SpD",
     spe: "Spe",
+    useIcons: "Use Type Icons",
+    layoutMode: "Layout Mode",
+    compact: "Compact",
+    relaxed: "Relaxed",
     typeNames: {
       normal: "Normal", fire: "Fire", water: "Water", electric: "Electric", grass: "Grass", ice: "Ice",
       fighting: "Fighting", poison: "Poison", ground: "Ground", flying: "Flying", psychic: "Psychic", bug: "Bug",
@@ -55,6 +59,10 @@ export const TRANSLATIONS = {
     spa: "とくこう",
     spd: "とくぼう",
     spe: "すばやさ",
+    useIcons: "タイプアイコンを表示",
+    layoutMode: "表示モード",
+    compact: "コンパクト",
+    relaxed: "ゆったり",
     typeNames: {
       normal: "ノーマル", fire: "ほのお", water: "みず", electric: "でんき", grass: "くさ", ice: "こおり",
       fighting: "かくとう", poison: "どく", ground: "じめん", flying: "ひこう", psychic: "エスパー", bug: "むし",

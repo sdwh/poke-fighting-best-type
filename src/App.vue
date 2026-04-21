@@ -62,8 +62,6 @@ const answeredInPool = computed(() => {
   return currentPool.value.filter(id => historyIds.has(id));
 });
 
-const remainingCount = computed(() => currentPool.value.length - answeredInPool.value.length);
-
 const bestTypesForCurrent = computed(() => {
   if (!currentPokemon.value) return { types: [], multiplier: 0 };
   let maxM = 0;
